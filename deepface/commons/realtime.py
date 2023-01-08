@@ -249,6 +249,7 @@ def analysis(db_path, model_name = 'VGG-Face', detector_backend = 'opencv', dist
 
 							for index, instance in emotion_df.iterrows():
 								emotion_label = "%s " % (instance['emotion'])
+								print(emotion_label)
 								emotion_score = instance['score']/100
 
 								bar_x = 35 #this is the size if an emotion is 100%
@@ -299,7 +300,7 @@ def analysis(db_path, model_name = 'VGG-Face', detector_backend = 'opencv', dist
 							#print(str(int(apparent_age))," years old ", dominant_emotion, " ", gender)
 
 							analysis_report = str(int(apparent_age))+" "+gender
-
+							print(analysis_report)
 							#-------------------------------
 
 							info_box_color = (46,200,255)
