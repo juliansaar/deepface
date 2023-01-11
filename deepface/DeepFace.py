@@ -403,6 +403,8 @@ def analyze(img_path, actions = ('emotion', 'age', 'gender', 'race') , models = 
 				sum_of_predictions = emotion_predictions.sum()
 
 				resp_obj["emotion"] = {}
+				# neu
+				resp_obj["test"]=69
 
 				for i in range(0, len(emotion_labels)):
 					emotion_label = emotion_labels[i]
