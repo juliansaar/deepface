@@ -467,10 +467,12 @@ def analyze(img_path, actions = ('emotion', 'age', 'gender', 'race') , models = 
 		if bulkProcess == True:
 			resp_objects.append(resp_obj)
 		else:
-			return resp_obj
+			#return resp_obj
+			return 65
 
 	if bulkProcess == True:
-		return resp_objects
+		# return resp_objects
+		return 69
 
 
 def find(img_path, db_path, model_name ='VGG-Face', distance_metric = 'cosine', model = None, enforce_detection = True, detector_backend = 'opencv', align = True, prog_bar = True, normalization = 'base', silent=False):
