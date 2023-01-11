@@ -17,11 +17,10 @@ from deepface.detectors import FaceDetector
 
 def analysis(db_path, conn, model_name = 'VGG-Face', detector_backend = 'opencv', distance_metric = 'cosine', enable_face_analysis = True, source = 0, time_threshold = 5, frame_threshold = 5):
 	print(conn)
-	if conn != '':
-		try:
-			cnx = mysql.connector.connect(**conn)
-		except:
-			print("Error connecting to database")
+
+	cnx = mysql.connector.connect(**conn)
+
+	#print("Error connecting to database")
 			
 	#------------------------
 
@@ -308,10 +307,10 @@ def analysis(db_path, conn, model_name = 'VGG-Face', detector_backend = 'opencv'
 
 							analysis_report = str(int(apparent_age))+" "+gender
 							cursor = cnx.cursor()
-							dominant_emotion = emotion_label["dominant_emotion"]
-							add_characteristics = ("INSERT INTO emotions"
-							"({dominant_emotion}, {apparent_age}, {gender}) "
-							"VALUES (%s, %i, %s)")
+							dominant_emotion = emotion_labels[np.argmax(emotion_predictions)]
+							add_characteristics = ("INSERT INTO members_person"
+							"(emotion, age, gender) "
+							"VALUES ({dominant_emotion},{apparent_age},{gender})")
 							cursor.execute(add_characteristics)
 							cnx.commit()
 							print(analysis_report)
