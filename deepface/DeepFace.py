@@ -404,7 +404,7 @@ def analyze(img_path, actions = ('emotion', 'age', 'gender', 'race') , models = 
 
 				resp_obj["emotion"] = {}
 				# new
-				# resp_obj["test"]=69
+				resp_obj["test"]=69
 
 				for i in range(0, len(emotion_labels)):
 					emotion_label = emotion_labels[i]
