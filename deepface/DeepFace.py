@@ -403,8 +403,8 @@ def analyze(img_path, actions = ('emotion', 'age', 'gender', 'race') , models = 
 				sum_of_predictions = emotion_predictions.sum()
 
 				resp_obj["emotion"] = {}
-				# neu
-				resp_obj["test"]=69
+				# new
+				# resp_obj["test"]=69
 
 				for i in range(0, len(emotion_labels)):
 					emotion_label = emotion_labels[i]
@@ -467,12 +467,10 @@ def analyze(img_path, actions = ('emotion', 'age', 'gender', 'race') , models = 
 		if bulkProcess == True:
 			resp_objects.append(resp_obj)
 		else:
-			#return resp_obj
-			return 65
+			return resp_obj
 
 	if bulkProcess == True:
-		# return resp_objects
-		return 69
+		return resp_objects
 
 
 def find(img_path, db_path, model_name ='VGG-Face', distance_metric = 'cosine', model = None, enforce_detection = True, detector_backend = 'opencv', align = True, prog_bar = True, normalization = 'base', silent=False):
