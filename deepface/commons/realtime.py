@@ -1,3 +1,4 @@
+import datetime
 import os
 from tqdm import tqdm
 import numpy as np
@@ -308,14 +309,12 @@ def analysis(db_path, conn, model_name = 'VGG-Face', detector_backend = 'opencv'
 							analysis_report = str(int(apparent_age))+" "+gender
 							cursor = cnx.cursor()
 							dominant_emotion = emotion_labels[np.argmax(emotion_predictions)]
-							add_characteristics = ("INSERT INTO members_person"
-							"(emotion, age, gender) "
-							"VALUES ({dominant_emotion},{apparent_age},{gender})")
-							cursor.execute(add_characteristics)
+							add_person = "INSERT INTO members_person (emotion, age, gender,timestamp) VALUES (%s,%s,%s,%s)"
+							data_person = (dominant_emotion, apparent_age, gender,datetime.datetime.now())
+							cursor.execute(add_person,data_person)
 							cnx.commit()
 							print(analysis_report)
-							#-------------------------------
-
+							#-------------------------------							
 							info_box_color = (46,200,255)
 
 							#top
@@ -330,7 +329,7 @@ def analysis(db_path, conn, model_name = 'VGG-Face', detector_backend = 'opencv'
 								cv2.drawContours(freeze_img, [triangle_coordinates], 0, info_box_color, -1)
 
 								cv2.rectangle(freeze_img, (x+int(w/5), y-pivot_img_size+int(pivot_img_size/5)), (x+w-int(w/5), y-int(pivot_img_size/3)), info_box_color, cv2.FILLED)
-								analysis_report = analysis_report + " " + conn
+								
 								cv2.putText(freeze_img, analysis_report, (x+int(w/3.5), y - int(pivot_img_size/2.1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 111, 255), 2)
 
 							#bottom
