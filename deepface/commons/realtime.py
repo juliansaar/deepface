@@ -5,6 +5,7 @@ import pandas as pd
 import cv2
 import time
 import re
+import mysql.connector
 
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -14,8 +15,14 @@ from deepface.extendedmodels import Age
 from deepface.commons import functions, realtime, distance as dst
 from deepface.detectors import FaceDetector
 
-def analysis(db_path, model_name = 'VGG-Face', detector_backend = 'opencv', distance_metric = 'cosine', enable_face_analysis = True, source = 0, time_threshold = 5, frame_threshold = 5):
-
+def analysis(db_path, conn, model_name = 'VGG-Face', detector_backend = 'opencv', distance_metric = 'cosine', enable_face_analysis = True, source = 0, time_threshold = 5, frame_threshold = 5):
+	print(conn)
+	if conn != '':
+		try:
+			cnx = mysql.connector.connect(**conn)
+		except:
+			print("Error connecting to database")
+			
 	#------------------------
 
 	face_detector = FaceDetector.build_model(detector_backend)
@@ -300,6 +307,13 @@ def analysis(db_path, model_name = 'VGG-Face', detector_backend = 'opencv', dist
 							#print(str(int(apparent_age))," years old ", dominant_emotion, " ", gender)
 
 							analysis_report = str(int(apparent_age))+" "+gender
+							cursor = cnx.cursor()
+							dominant_emotion = emotion_label["dominant_emotion"]
+							add_characteristics = ("INSERT INTO emotions"
+							"({dominant_emotion}, {apparent_age}, {gender}) "
+							"VALUES (%s, %i, %s)")
+							cursor.execute(add_characteristics)
+							cnx.commit()
 							print(analysis_report)
 							#-------------------------------
 
@@ -317,7 +331,7 @@ def analysis(db_path, model_name = 'VGG-Face', detector_backend = 'opencv', dist
 								cv2.drawContours(freeze_img, [triangle_coordinates], 0, info_box_color, -1)
 
 								cv2.rectangle(freeze_img, (x+int(w/5), y-pivot_img_size+int(pivot_img_size/5)), (x+w-int(w/5), y-int(pivot_img_size/3)), info_box_color, cv2.FILLED)
-
+								analysis_report = analysis_report + " " + conn
 								cv2.putText(freeze_img, analysis_report, (x+int(w/3.5), y - int(pivot_img_size/2.1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 111, 255), 2)
 
 							#bottom
@@ -466,3 +480,5 @@ def analysis(db_path, model_name = 'VGG-Face', detector_backend = 'opencv', dist
 	#kill open cv things
 	cap.release()
 	cv2.destroyAllWindows()
+	cursor.close()
+	cnx.close()
