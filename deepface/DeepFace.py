@@ -787,6 +787,8 @@ def stream(db_path = '', conn='', model_name ='VGG-Face', detector_backend = 'op
 	Parameters:
 		db_path (string): facial database path. You should store some .jpg files in this folder.
 
+		conn: database connection object
+
 		model_name (string): VGG-Face, Facenet, OpenFace, DeepFace, DeepID, Dlib or Ensemble
 
 		detector_backend (string): opencv, ssd, mtcnn, dlib, retinaface
