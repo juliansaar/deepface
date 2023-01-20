@@ -310,7 +310,7 @@ def analysis(db_path, conn, model_name = 'VGG-Face', detector_backend = 'opencv'
 							cursor = cnx.cursor()
 							dominant_emotion = emotion_labels[np.argmax(emotion_predictions)]
 							add_person = "INSERT INTO members_person (emotion, age, gender,timestamp) VALUES (%s,%s,%s,%s)"
-							data_person = (dominant_emotion, apparent_age, gender,datetime.datetime.now())
+							data_person = (dominant_emotion, int(apparent_age), gender,datetime.datetime.now())
 							cursor.execute(add_person,data_person)
 							cnx.commit()
 							print(analysis_report)
