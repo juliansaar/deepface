@@ -16,7 +16,7 @@ from deepface.extendedmodels import Age
 from deepface.commons import functions, realtime, distance as dst
 from deepface.detectors import FaceDetector
 
-def analysis(db_path, conn, model_name = 'VGG-Face', detector_backend = 'opencv', distance_metric = 'cosine', enable_face_analysis = True, source = 0, time_threshold = 5, frame_threshold = 5):
+def analysis(db_path, conn, location_camera, model_name = 'VGG-Face', detector_backend = 'opencv', distance_metric = 'cosine', enable_face_analysis = True, source = 0, time_threshold = 5, frame_threshold = 5):
 	print(conn)
 
 	cnx = mysql.connector.connect(**conn)
@@ -309,8 +309,9 @@ def analysis(db_path, conn, model_name = 'VGG-Face', detector_backend = 'opencv'
 							analysis_report = str(int(apparent_age))+" "+gender
 							cursor = cnx.cursor()
 							dominant_emotion = emotion_labels[np.argmax(emotion_predictions)]
-							add_person = "INSERT INTO members_person (emotion, age, gender,timestamp) VALUES (%s,%s,%s,%s)"
-							data_person = (dominant_emotion, int(apparent_age), gender,datetime.datetime.now())
+							print('Location_camera:',location_camera)
+							add_person = "INSERT INTO members_person (emotion, age, gender,timestamp, ort) VALUES (%s,%s,%s,%s,%s)"
+							data_person = (dominant_emotion, int(apparent_age), gender,datetime.datetime.now(),location_camera)
 							cursor.execute(add_person,data_person)
 							cnx.commit()
 							print(analysis_report)

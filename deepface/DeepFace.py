@@ -779,13 +779,17 @@ def represent(img_path, model_name = 'VGG-Face', model = None, enforce_detection
 
 	return embedding
 
-def stream(db_path = '', conn='', model_name ='VGG-Face', detector_backend = 'opencv', distance_metric = 'cosine', enable_face_analysis = True, source = 0, time_threshold = 5, frame_threshold = 5):
+def stream(db_path = '', conn='', location_camera='', model_name ='VGG-Face', detector_backend = 'opencv', distance_metric = 'cosine', enable_face_analysis = True, source = 0, time_threshold = 5, frame_threshold = 5):
 
 	"""
 	This function applies real time face recognition and facial attribute analysis
 
 	Parameters:
 		db_path (string): facial database path. You should store some .jpg files in this folder.
+
+		conn: database connection object
+
+		location: camera location
 
 		model_name (string): VGG-Face, Facenet, OpenFace, DeepFace, DeepID, Dlib or Ensemble
 
@@ -809,7 +813,7 @@ def stream(db_path = '', conn='', model_name ='VGG-Face', detector_backend = 'op
 	if frame_threshold < 1:
 		raise ValueError("frame_threshold must be greater than the value 1 but you passed "+str(frame_threshold))
 
-	realtime.analysis(db_path, conn, model_name, detector_backend, distance_metric, enable_face_analysis
+	realtime.analysis(db_path, conn, location_camera, model_name, detector_backend, distance_metric, enable_face_analysis
 						, source = source, time_threshold = time_threshold, frame_threshold = frame_threshold)
 
 def detectFace(img_path, target_size = (224, 224), detector_backend = 'opencv', enforce_detection = True, align = True):
